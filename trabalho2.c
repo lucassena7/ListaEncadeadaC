@@ -136,16 +136,16 @@ int inserirOrdenado(TLista *L, int numero)
 	}
 	else
 		{
+			aux = (TLista) malloc (sizeof(TNo));
+   			temp = (TLista) malloc (sizeof(TNo));
+   			
 			//verificando se a memória foi alocada
-			if (aux == NULL)
+			if ((aux == NULL) || (temp == NULL))
 			{
 				return FALSE;
 			}
 			else
-			{
-				aux = (TLista) malloc (sizeof(TNo));
-   				temp = (TLista) malloc (sizeof(TNo));
-   				
+			{	
 	        	aux->valor = numero;
 	        
 	       	 	// a lista está vazia?
