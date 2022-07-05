@@ -1,7 +1,5 @@
-/* Desenvolver uma função que, dada uma lista encadeada L do tipo TLista, exiba os seus elementos
-   “de trás para frente”; ou seja, o elemento apontado por L será o último a ser exibido.
-Nota: por ser uma atividade que avalia a manipulação de listas encadeadas, nenhuma outra
-	  estrutura de dados (como vetores, por exemplo) pode ser utilizada nesta solução. */
+/* Desenvolver uma função que, dada uma lista encadeada L do tipo TLista e dois números inteiros 
+   A e B, retorne o número de elementos de L que encontram-se no intervalo [A, B]. */
 
 //importação de bibliotecas
 #include <stdio.h>
@@ -11,19 +9,21 @@ Nota: por ser uma atividade que avalia a manipulação de listas encadeadas, nenhu
 #define TRUE 1
 #define FALSE 0
 
-//definição de tipos
-typedef struct No {
+//No* prox = No *prox --> prox é um ponteiro de No
+
+//declaração de tipos
+typedef struct No { //No é uma variável provisória de TNo
 	int valor;
 	struct No* prox;
 } TNo;
 
-typedef TNo* TLista;  //ou     typedef *TNo TLista;
+typedef TNo* TLista; //chame TNo* por Tlista
 
 //protótipos das funções
 int menu ();
-int inserir (TLista *L, int numero);
+int inserir (TLista* L, int numero);
 void exibir (TLista L);
-void exibirContrario (TLista L);
+int quantNumerosIntervalo (TLista L, int numA, int numB);
 
 void main ()
 {
@@ -59,10 +59,17 @@ void main ()
 			        exibir (lista);
 			        break;
 			       
-			//Exibição
-			case 3: //chamando a função
-			        exibirContrario (lista);
-			        break;      
+			//Busca
+			case 3: printf ("Entre com o primeiro numero do intervalo: ");
+			        scanf ("%d", &num1);
+			        
+			        printf ("Entre com o segundo numero do intervalo: ");
+			        scanf ("%d", &num2);
+			        
+			        //Chamando a função
+			        resp = quantNumerosIntervalo (lista, num1, num2);
+			        printf ("O intervalo entre %d e %d possui %d elementos.\n", num1, num2, resp);
+					break;       
 			       
 			//saída do programa 
 			case 4: printf ("Fim do programa!\n");
@@ -91,7 +98,7 @@ int menu ()
 	printf ("Menu de opcoes:\n\n");
 	printf ("(1) Inserir.\n");
 	printf ("(2) Exibir\n");
-	printf ("(3) Exibir elementos de tras para frente.\n");
+	printf ("(3) Quantidade de numeros entre um intervalo.\n");
 	printf ("(4) Sair\n\n");
 	
 	//lendo a opção desejada
@@ -154,25 +161,20 @@ void exibir (TLista L)
 		}
 	}
 }
-void exibirContrario (TLista L)
+
+int quantNumerosIntervalo (TLista L, int numA, int numB)
 {
 	//declaração de variáveis
 	TLista aux = L; //fazendo 'aux' apontar, inicialmente, para o primeiro nó (ou seja, aquele apontado por 'L')
+	int cont = 0;
 	
-	if (L == NULL)
+	while (aux != NULL) //enquanto 'aux' for diferente de NULL; ou seja, enquanto existir nó na lista.
+	{	
+		if ((aux->valor >= numA) && (aux->valor <= numB)) //verificando se o elemento apontado por 'aux' está no intervalo.
 		{
-			printf ("Lista Vazia!");
+			cont++;
 		}
-	
-	else
-	{
-		printf ("Lista: ");
-		
-		while (aux != NULL) //enquanto 'aux' for diferente de NULL; ou seja, enquanto existir nó na lista
-		{
-			aux = aux->prox;
-			//printf ("%d ", aux->valor);		//por esse motivo, os números são apresentados em ordem crescente, de 'numero' a 1
-		}
-		printf ("%d ", aux->valor);
+		aux = aux->prox; //fazendo com que 'aux' aponte para o próximo nó da lista
 	}
+	return cont; //retornando a quantidade de números do intervalo
 }

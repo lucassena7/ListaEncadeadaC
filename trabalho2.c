@@ -18,7 +18,7 @@ typedef struct No {
 typedef TNo* TLista;  //ou     typedef *TNo TLista;
 
 //protótipos das funções
-int inserir (TLista *L, int numero);
+int inserirOrdenado (TLista *L, int numero);
 int remover (TLista *L, int numero);
 int alterar (TLista L, int numeroIni, int numeroAlt);
 TLista buscar (TLista L, int numero);
@@ -48,7 +48,7 @@ void main ()
 			        scanf ("%d", &num1);
 			        
 			        //chamando a função
-			        if (inserir (&L, num1) == TRUE)
+			        if (inserirOrdenado (&L, num1) == TRUE)
 			        {
 			        	printf ("\n\tInsercao realizada com sucesso!");
 					}
@@ -124,25 +124,18 @@ void main ()
 
 
 //implementação das funções
-int inserir (TLista *L, int numero)
+int inserirOrdenado(TLista *L, int numero)
 {
-	//declaração de variáveis
-	TLista aux;
-	
-	//verificando se o valor já existe na lista
+   //declaração de variáveis
+	TLista aux, temp;
+   	
+   	//verificando se o valor já existe na lista
 	if (buscar (*L, numero) != NULL)
 	{
 		return FALSE; //essa aqui é a parte q ele verifica se o número ja existe na lista. se existir, ele retorna falso e nao insere
 	}
 	else
-	{	
-		if (numero < aux->valor)
 		{
-			//Agr aqui tem q verificar se o elemento 'numero' é menor que o elemento ja existente na lista. Se for, insere no começo.
-			
-			//Passo 1: alocar memória para o novo nó
-			aux = (TLista) malloc (sizeof(TNo));
-		
 			//verificando se a memória foi alocada
 			if (aux == NULL)
 			{
@@ -150,23 +143,47 @@ int inserir (TLista *L, int numero)
 			}
 			else
 			{
-				//Passo 2: armazenar 'numero' no novo nó
-				aux->valor = numero;
-					
-				//Passo 3: fazer o campo 'prox' do novo nó apontar para o "até então" primeiro nó da lista
-				aux->prox = *L;
-					
-				//Passo 4: fazer '*L' apontar para o novo nó
-				*L = aux;
-					
-				return TRUE;
-			}
+				aux = (TLista) malloc (sizeof(TNo));
+   				temp = (TLista) malloc (sizeof(TNo));
+   				
+	        	aux->valor = numero;
+	        
+	       	 	// a lista está vazia?
+	       	 	if(*L == NULL)
+				{
+	        		aux->prox = NULL;
+	        	
+	            	*L = aux;
+	            
+	            	return TRUE;
+	        	}
+					 
+				// é o menor?
+	        	else if(aux->valor < (*L)->valor)
+				{
+	            	aux->prox = *L;
+	            
+	            	*L = aux;
+	            
+	            	return TRUE;
+	        	}
+	        	else
+				{
+	            	temp = *L;
+	            
+	            	while((temp->prox) && (aux->valor > temp->prox->valor))
+	            	{
+		          		temp = temp->prox;
+		            
+		            	aux->prox = temp->prox;
+		            
+		           		temp->prox = aux;
+		            
+		            	return TRUE;
+					}
+	        	}  
+    		}
 		}
-		else 
-		{
-			
-		}
-	}
 }
 
 int remover (TLista *L, int numero)
