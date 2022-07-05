@@ -91,7 +91,7 @@ int menu ()
 	printf ("Menu de opcoes:\n\n");
 	printf ("(1) Inserir.\n");
 	printf ("(2) Exibir\n");
-	printf ("(3) Exibir elementos de tras para frente.\n");
+	printf ("(3) Exibir elementos de tra's para frente.\n");
 	printf ("(4) Sair\n\n");
 	
 	//lendo a opção desejada
@@ -171,8 +171,7 @@ void exibirContrario (TLista L)
 		while (aux != NULL) //enquanto 'aux' for diferente de NULL; ou seja, enquanto existir nó na lista
 		{
 			aux = aux->prox;
-			//printf ("%d ", aux->valor);		//por esse motivo, os números são apresentados em ordem crescente, de 'numero' a 1
+			printf ("%d ", aux->valor);		//por esse motivo, os números são apresentados em ordem crescente, de 'numero' a 1
 		}
-		printf ("%d ", aux->valor);
 	}
 }
