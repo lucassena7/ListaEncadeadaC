@@ -174,13 +174,10 @@ int inserirOrdenado(TLista *L, int numero)
 	            	while((temp->prox) && (aux->valor > temp->prox->valor))
 	            	{
 		          		temp = temp->prox;
-		            
-		            	aux->prox = temp->prox;
-		            
-		           		temp->prox = aux;
-		            
-		            	return TRUE;
-					}
+      				}
+                aux->prox = temp->prox;
+                temp->prox = aux;
+                return TRUE;
 	        	}  
     		}
 		}

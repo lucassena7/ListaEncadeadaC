@@ -1,7 +1,8 @@
 /* Desenvolver uma função que, dada uma lista encadeada L do tipo TLista, exiba os seus elementos
    “de trás para frente”; ou seja, o elemento apontado por L será o último a ser exibido.
-Nota: por ser uma atividade que avalia a manipulação de listas encadeadas, nenhuma outra
-	  estrutura de dados (como vetores, por exemplo) pode ser utilizada nesta solução. */
+	
+	Nota: por ser uma atividade que avalia a manipulação de listas encadeadas, nenhuma outra
+	estrutura de dados (como vetores, por exemplo) pode ser utilizada nesta solução. */
 
 //importação de bibliotecas
 #include <stdio.h>
@@ -154,24 +155,27 @@ void exibir (TLista L)
 		}
 	}
 }
+
 void exibirContrario (TLista L)
 {
 	//declaração de variáveis
-	TLista aux = L; //fazendo 'aux' apontar, inicialmente, para o primeiro nó (ou seja, aquele apontado por 'L')
+	TLista aux = L; //fazendo 'aux' receber o primeiro nó (aquele apontado por 'L').
 	
-	if (L == NULL)
+	if (L) //Enquanto a lista existir, ou seja, for diferente de NULL
+	{	
+		if (aux->prox == NULL) //se o 'prox' de 'aux' for igual a NULL
 		{
-			printf ("Lista Vazia!");
+			printf ("Lista: ");
+			printf ("%d ", aux->valor);	
 		}
-	
+		else //enquanto houver nó na lista
+		{
+			exibirContrario (aux->prox);
+			printf("%d ", aux->valor);
+		}
+	}
 	else
 	{
-		printf ("Lista: ");
-		
-		while (aux != NULL) //enquanto 'aux' for diferente de NULL; ou seja, enquanto existir nó na lista
-		{
-			aux = aux->prox;
-			printf ("%d ", aux->valor);		//por esse motivo, os números são apresentados em ordem crescente, de 'numero' a 1
-		}
+		printf ("Lista Vazia!");
 	}
 }
