@@ -85,9 +85,13 @@ void main ()
 			case 5: copiarLista (&L1, &L3);
 					copiarLista (&L2, &L3);
 					break;
+			
+			//Exibir lista3
+			case 6: exibir (L3);
+					break;
 					
-			//Sa?da
-			case 6: printf ("\n\nPrograma finalizado!");
+			//Saída
+			case 7: printf ("\n\nPrograma finalizado!");
 			        break;
 			        
 			default: printf ("\n\nOpcao invalida! Tente novamente.");
@@ -236,8 +240,9 @@ int menu ()
 	printf ("(2) Inserir elementos na lista 2\n");
 	printf ("(3) Exibir elementos da lista 1\n");
 	printf ("(4) Exibir elementos da lista 2\n");
-	printf ("(5) Criar uma terceira lista 'L3' com os elementos de 'L1' e 'L2' ordenados crescentemente e sem repeticao.\n");
-	printf ("(6) Sair\n\n");
+	printf ("(5) Criar uma lista 'L3' com os elementos de 'L1' e 'L2' ordenados crescentemente e sem repeticao.\n");
+	printf ("(6) Exibir elementos da lista 3\n");
+	printf ("(7) Sair\n\n");
 	
 	//lendo a opção do usuário
 	printf ("Entre com a sua opcao: ");
