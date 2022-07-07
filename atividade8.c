@@ -1,15 +1,15 @@
 /* Dadas duas listas encadeadas L1 e L2, ambas do tipo TLista, ordenadas crescentemente e sem repetição de elementos, criar uma terceira lista L3, contendo 
-   todos os elementos de L1 e L2. Como as duas originais, a nova lista deve ter seus elementos ordenados crescentemente, e sem repetição de valores. */
+   todos os elementos de L1 e L2. Como as duas originais, a nova lista deve ter seus elementos ordenados crescentemente, e repetição de valores. */
    
-//importação de bibliotecas
+//Importação de bibliotecas
 #include <stdio.h>
 #include <stdlib.h>
 
-//definição de constantes
+//Definições de constantes
 #define TRUE 1
 #define FALSE 0
 
-//definição de tipos
+//Definições de tipos
 typedef struct No {
 	int valor;
 	struct No* prox;
@@ -17,18 +17,20 @@ typedef struct No {
 
 typedef TNo* TLista;  //ou     typedef *TNo TLista;
 
-//protótipos das funções
-int inserir (TLista *L, int numero);
+//Protótipos das funções
+int inserirOrdenado (TLista *L, int numero);
 void exibir (TLista L);
 TLista buscar (TLista L, int numero);
 int menu ();
+void copiarLista (TLista *L, TLista *Laux);
 
 //main
 void main ()
 {
-	//declaração de variáveis
+	//Declaração de variáveis
 	TLista L1 = NULL;
 	TLista L2 = NULL;
+	TLista L3 = NULL;
 	int num1, num2, op;
 	
 	do
@@ -46,7 +48,7 @@ void main ()
 			        scanf ("%d", &num1);
 			        
 			        //chamando a função
-			        if (inserir (&L1, num1) == TRUE)
+			        if (inserirOrdenado (&L1, num1) == TRUE)
 			        {
 			        	printf ("\n\tInsercao realizada com sucesso!");
 					}
@@ -61,7 +63,7 @@ void main ()
 			        scanf ("%d", &num1);
 			        
 			        //chamando a função
-			        if (inserir (&L2, num1) == TRUE)
+			        if (inserirOrdenado (&L2, num1) == TRUE)
 			        {
 			        	printf ("\n\tInsercao realizada com sucesso!");
 					}
@@ -79,10 +81,12 @@ void main ()
 			case 4: exibir (L2);
 					break;
 			
-			//Chamando a função.
-			case 5: 
+			//Chamando a função copiarLista.
+			case 5: copiarLista (&L1, &L3);
+					copiarLista (&L2, &L3);
+					break;
 					
-			//Saída
+			//Sa?da
 			case 6: printf ("\n\nPrograma finalizado!");
 			        break;
 			        
@@ -95,46 +99,69 @@ void main ()
 }
 
 
-//implementação das funções
-int inserir (TLista *L, int numero)
+//Implementação das demais funções
+int inserirOrdenado(TLista *L, int numero)
 {
-	//declaração de variáveis
-	TLista aux;
-	
-	//verificando se o valor já existe na lista
+   //Declaração de variáveis
+	TLista aux, temp;
+   	
+   	//verificando se o valor já existe na lista
 	if (buscar (*L, numero) != NULL)
 	{
-		return FALSE;
+		return FALSE; //essa aqui é a parte q ele verifica se o número ja existe na lista. se existir, ele retorna falso e nao insere
 	}
 	else
-	{	
-		//Passo 1: alocar memória para o novo nó
-		aux = (TLista) malloc (sizeof(TNo));
-		
-		//verificando se a memória foi alocada
-		if (aux == NULL)
 		{
-			return FALSE;
+			aux = (TLista) malloc (sizeof(TNo));
+   			temp = (TLista) malloc (sizeof(TNo));
+   			
+			//verificando se a memória foi alocada
+			if ((aux == NULL) || (temp == NULL))
+			{
+				return FALSE;
+			}
+			else
+			{	
+	        	aux->valor = numero;
+	        
+	       	 	// a lista está vazia?
+	       	 	if(*L == NULL)
+				{
+	        		aux->prox = NULL;
+	        	
+	            	*L = aux;
+	            
+	            	return TRUE;
+	        	}
+					 
+				// é o menor?
+	        	else if(aux->valor < (*L)->valor)
+				{
+	            	aux->prox = *L;
+	            
+	            	*L = aux;
+	            
+	            	return TRUE;
+	        	}
+	        	else
+				{
+	            	temp = *L;
+	            
+	            	while((temp->prox) && (aux->valor > temp->prox->valor))
+	            	{
+		          		temp = temp->prox;
+      				}
+                aux->prox = temp->prox;
+                temp->prox = aux;
+                return TRUE;
+	        	}  
+    		}
 		}
-		else
-		{
-			//Passo 2: armazenar 'numero' no novo nó
-			aux->valor = numero;
-			
-			//Passo 3: fazer o campo 'prox' do novo nó apontar para o "até então" primeiro nó da lista
-			aux->prox = *L;
-			
-			//Passo 4: fazer '*L' apontar para o novo nó
-			*L = aux;
-			
-			return TRUE;
-		}
-	}
 }
 
 TLista buscar (TLista L, int numero)
 {
-	//declaração de variáveis
+	//Declaração de variáveis
 	TLista aux;
 	
 	//fazer com que 'aux' aponte para o primeiro nó da lista
@@ -142,7 +169,7 @@ TLista buscar (TLista L, int numero)
 		
 	while (aux != NULL) //while (aux)
 	{
-		//verificando se o valor apontado por 'aux' é o número sendo buscado
+		//verificando se o valor apontado por 'aux' ? o número sendo buscado
 		if (aux->valor == numero)
 		{
 			return aux;			
@@ -156,9 +183,21 @@ TLista buscar (TLista L, int numero)
 	return NULL;
 }
 
+void copiarLista (TLista *L, TLista *Laux)
+{
+	//Declaração de variáveis
+	TLista aux = *L;
+	
+	while (aux) //Enquanto aux for diferente de NULL
+	{
+		inserirOrdenado(*Laux, aux->valor);
+		aux = aux->prox;
+	}
+}
+
 void exibir (TLista L)
 {
-	//declaração de variáveis
+	//Declaração de variáveis
 	TLista aux;
 	
 	//verificando se a lista está vazia
@@ -188,10 +227,10 @@ void exibir (TLista L)
 
 int menu ()
 {
-	//declaração de variáveis
+	//Declaração de variáveis
 	int opcao;
 	
-	//exibindo o meu ao usuário
+	//exibindo o menu ao usuário
 	printf ("Menu de Operacoes:\n\n");
 	printf ("(1) Inserir elementos na lista 1\n");
 	printf ("(2) Inserir elementos na lista 2\n");
