@@ -99,7 +99,7 @@ void main ()
 		
 		system ("PAUSE");
 	}
-	while (op != 6);
+	while (op != 7);
 }
 
 
